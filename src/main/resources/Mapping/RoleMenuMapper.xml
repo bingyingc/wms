@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.RoleMenuMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.RoleMenu">
+    <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+    <id column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.amblelogistic.Model.RoleMenu">
+    delete from role_menu
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+      and MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.amblelogistic.Model.RoleMenu">
+    insert into role_menu (ROLE_ID, MENU_ID)
+    values (#{roleId,jdbcType=VARCHAR}, #{menuId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.RoleMenu">
+    insert into role_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="menuId != null">
+        MENU_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null">
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

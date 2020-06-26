@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.UserInMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.UserIn">
+    <id column="USER_ID" jdbcType="BIGINT" property="userId" />
+    <id column="IN_ID" jdbcType="VARCHAR" property="inId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.amblelogistic.Model.UserIn">
+    delete from user_in
+    where USER_ID = #{userId,jdbcType=BIGINT}
+      and IN_ID = #{inId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.amblelogistic.Model.UserIn">
+    insert into user_in (USER_ID, IN_ID)
+    values (#{userId,jdbcType=BIGINT}, #{inId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.UserIn">
+    insert into user_in
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="inId != null">
+        IN_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="inId != null">
+        #{inId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

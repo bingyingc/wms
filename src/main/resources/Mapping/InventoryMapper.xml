@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.InventoryMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.Inventory">
+    <id column="INVEN_ID" jdbcType="VARCHAR" property="invenId" />
+    <result column="CUSTOMER_ID" jdbcType="VARCHAR" property="customerId" />
+    <result column="ITEM_NUM" jdbcType="VARCHAR" property="itemNum" />
+    <result column="ITEM_NAME" jdbcType="VARCHAR" property="itemName" />
+    <result column="MANUFACTURER" jdbcType="VARCHAR" property="manufacturer" />
+    <result column="SPECIFICATION" jdbcType="VARCHAR" property="specification" />
+    <result column="MODEL" jdbcType="VARCHAR" property="model" />
+    <result column="QTY" jdbcType="DOUBLE" property="qty" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    INVEN_ID, CUSTOMER_ID, ITEM_NUM, ITEM_NAME, MANUFACTURER, SPECIFICATION, MODEL, QTY,
+    CREATE_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from inventory
+    where INVEN_ID = #{invenId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from inventory
+    where INVEN_ID = #{invenId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.amblelogistic.Model.Inventory">
+    insert into inventory (INVEN_ID, CUSTOMER_ID, ITEM_NUM, 
+      ITEM_NAME, MANUFACTURER, SPECIFICATION, 
+      MODEL, QTY,
+      CREATE_DATE)
+    values (#{invenId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{itemNum,jdbcType=VARCHAR}, 
+      #{itemName,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{specification,jdbcType=VARCHAR}, 
+      #{model,jdbcType=VARCHAR}, #{qty,jdbcType=DOUBLE},
+      now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.Inventory">
+    insert into inventory
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="invenId != null">
+        INVEN_ID,
+      </if>
+      <if test="customerId != null">
+        CUSTOMER_ID,
+      </if>
+      <if test="itemNum != null">
+        ITEM_NUM,
+      </if>
+      <if test="itemName != null">
+        ITEM_NAME,
+      </if>
+      <if test="manufacturer != null">
+        MANUFACTURER,
+      </if>
+      <if test="specification != null">
+        SPECIFICATION,
+      </if>
+      <if test="model != null">
+        MODEL,
+      </if>
+      <if test="qty != null">
+        QTY,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+        IS_DELETE,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="invenId != null">
+        #{invenId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNum != null">
+        #{itemNum,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null">
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null">
+        #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="specification != null">
+        #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="qty != null">
+        #{qty,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      0,
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.amblelogistic.Model.Inventory">
+    update inventory
+    <set>
+      <if test="customerId != null">
+        CUSTOMER_ID = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNum != null">
+        ITEM_NUM = #{itemNum,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null">
+        ITEM_NAME = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null">
+        MANUFACTURER = #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="specification != null">
+        SPECIFICATION = #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        MODEL = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="qty != null">
+        QTY = #{qty,jdbcType=DOUBLE},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where INVEN_ID = #{invenId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.amblelogistic.Model.Inventory">
+    update inventory
+    set CUSTOMER_ID = #{customerId,jdbcType=VARCHAR},
+      ITEM_NUM = #{itemNum,jdbcType=VARCHAR},
+      ITEM_NAME = #{itemName,jdbcType=VARCHAR},
+      MANUFACTURER = #{manufacturer,jdbcType=VARCHAR},
+      SPECIFICATION = #{specification,jdbcType=VARCHAR},
+      MODEL = #{model,jdbcType=VARCHAR},
+      QTY = #{qty,jdbcType=DOUBLE},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    where INVEN_ID = #{invenId,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="queryList" resultMap="BaseResultMap"  parameterType="Object">
+    select *
+    from inventory a
+    <include refid="Example_Where_Clause"/>
+    and a.IS_DELETE = 0
+    order by a.INVEN_ID desc
+    <if test="pageSize != null and pageSize != ''" >
+      limit #{pageSize}
+    </if>
+    <if test="pageOffset != null and pageOffset != ''" >
+      offset #{pageOffset}
+    </if>
+  </select>
+
+  <!-- 用户token信息 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+    select count(1) from inventory a
+    <include refid="Example_Where_Clause"/>
+    and a.IS_DELETE = 0
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="Example_Where_Clause">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="invenId != null and invenId != ''" >
+        and a.INVEN_ID like CONCAT(CONCAT('%', #{invenId}),'%')
+      </if>
+      <if test="customerId != null and customerId != ''" >
+        and a.CUSTOMER_ID like CONCAT(CONCAT('%', #{customerId}),'%')
+      </if>
+      <if test="itemNum != null and itemNum != ''" >
+        and a.ITEM_NUM like CONCAT(CONCAT('%', #{itemNum}),'%')
+      </if>
+      <if test="itemName != null and itemName != ''" >
+        and a.ITEM_NAME like CONCAT(CONCAT('%', #{itemName}),'%')
+      </if>
+      <if test="manufacturer != null and manufacturer != ''" >
+        and a.MANUFACTURER like CONCAT(CONCAT('%', #{manufacturer}),'%')
+      </if>
+      <if test="specification != null">
+        and a.SPECIFICATION = #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        and a.MODEL = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="qty != null">
+        and a.QTY = #{qty,jdbcType=DOUBLE},
+      </if>
+      <if test="createDate != null">
+        and a.CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        and a.IS_DELETE = #{isDelete,jdbcType=BOOLEAN},
+      </if>
+    </trim>
+  </sql>
+</mapper>

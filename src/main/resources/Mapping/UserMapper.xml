@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.User">
+    <id column="USER_ID" jdbcType="BIGINT" property="userId" />
+    <result column="DEPT_ID" jdbcType="VARCHAR" property="deptId" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="REAL_NAME" jdbcType="VARCHAR" property="realName" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="GENDER" jdbcType="VARCHAR" property="gender" />
+    <result column="PHONE_NUM" jdbcType="VARCHAR" property="phoneNum" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="FIRST_LOGIN" jdbcType="TIMESTAMP" property="firstLogin" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    USER_ID, DEPT_ID, USER_NAME, REAL_NAME, PASSWORD, GENDER, PHONE_NUM, ADDRESS, CREATE_DATE, 
+    FIRST_LOGIN
+  </sql>
+  <!-- 连接简历表 -->
+  <select id="queryUser" resultMap="BaseResultMap" parameterType="Object">
+    select
+    *
+    from user u
+    where 1=1
+    <if test="userId != null and userId != ''">
+      and u.USER_ID = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="deptId != null and deptId != ''">
+      and u.DEPT_ID = #{deptId,jdbcType=BIGINT}
+    </if>
+    <if test="userName != null and userName != ''">
+      and u.USER_NAME = #{userName}
+    </if>
+    <if test="realName != null and realName != ''">
+      and u.REAL_NAME = #{realName}
+    </if>
+    <if test="password != null and password != ''">
+      and u.PASSWORD = #{password}
+    </if>
+    <if test="gender != null and gender != ''">
+      and u.GENDER = #{gender}
+    </if>
+    <if test="isDelete != null and isDelete != ''">
+      and u.IS_DELETE= #{isDelete}
+    </if>
+    <if test="phoneNum != null and phoneNum != ''">
+      and u.PHONE_NUM= #{phoneNum}
+    </if>
+    <if test="address != null and address != ''">
+      and u.ADDRESS= #{address}
+    </if>
+    <if test="createDate != null  ">
+      and u.CREATE_DATE= #{createDate}
+    </if>
+    <if test="firstLogin != null  ">
+      and u.FIRST_LOGIN= #{firstLogin}
+    </if>
+  </select>
+
+  <!-- 查询人才列表（管理后台用） -->
+  <select id="queryList" resultMap="BaseResultMap"  parameterType="Object">
+    select a.*
+    from user a
+    <include refid="Example_Where_Clause"/>
+    and a.IS_DELETE = 0
+    order by a.CREATE_DATE desc
+    <if test="pageSize != null and pageSize != ''" >
+      limit #{pageSize}
+    </if>
+    <if test="pageOffset != null and pageOffset != ''" >
+      offset #{pageOffset}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+    select count(1) from user a
+    <include refid="Example_Where_Clause"/>
+    and a.IS_DELETE = 0
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.amblelogistic.Model.User">
+    insert into user (USER_ID, DEPT_ID, USER_NAME, 
+      REAL_NAME, PASSWORD, GENDER, 
+      PHONE_NUM, ADDRESS, CREATE_DATE, 
+      FIRST_LOGIN)
+    values (#{userId,jdbcType=BIGINT}, #{deptId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{realName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
+      #{phoneNum,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{firstLogin,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="deptId != null">
+        DEPT_ID,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="realName != null">
+        REAL_NAME,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="gender != null">
+        GENDER,
+      </if>
+      <if test="phoneNum != null">
+        PHONE_NUM,
+      </if>
+      <if test="address != null">
+        ADDRESS,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="firstLogin != null">
+        FIRST_LOGIN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNum != null">
+        #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstLogin != null">
+        #{firstLogin,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.amblelogistic.Model.User">
+    update user
+    <set>
+      <if test="deptId != null">
+        DEPT_ID = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        REAL_NAME = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        GENDER = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNum != null">
+        PHONE_NUM = #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstLogin != null">
+        FIRST_LOGIN = #{firstLogin,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.amblelogistic.Model.User">
+    update user
+    set DEPT_ID = #{deptId,jdbcType=VARCHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      REAL_NAME = #{realName,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      GENDER = #{gender,jdbcType=VARCHAR},
+      PHONE_NUM = #{phoneNum,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      FIRST_LOGIN = #{firstLogin,jdbcType=TIMESTAMP}
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <!-- 查询条件 -->
+  <sql id="Example_Where_Clause">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="trueName != null and trueName != ''" >
+        and a.true_name like CONCAT(CONCAT('%', #{trueName}),'%')
+      </if>
+      <if test="userName != null and userName != ''" >
+        and a.USER_NAME like CONCAT(CONCAT('%', #{userName}),'%')
+      </if>
+      <if test="sex != null and sex != ''" >
+        and d.resume_sex =  #{sex}
+      </if>
+      <if test="phone != null and phone != ''" >
+        and a.phone like CONCAT(CONCAT('%', #{phone}),'%')
+      </if>
+      <if test="refereeName != null and refereeName != ''" >
+        and a.referee in(select id from t_user a where a.true_name like CONCAT(CONCAT('%', #{refereeName}),'%'))
+      </if>
+      <if test="regTimeStart != null and regTimeStart != ''" >
+        and a.create_time &gt;=  #{regTimeStart}
+      </if>
+      <if test="regTimeEnd != null and regTimeEnd != ''" >
+        and a.create_time &lt;=  #{regTimeEnd}
+      </if>
+      <if test="state != null and state != ''" >
+        and a.state =  #{state}
+      </if>
+      <if test="studentIdentState != null and studentIdentState != ''" >
+        and b.student_ident_state =  #{studentIdentState}
+      </if>
+      <if test="idIdentState != null and idIdentState != ''" >
+        and b.id_ident_state =  #{idIdentState}
+      </if>
+      <if test="bankCardIdentState != null and bankCardIdentState != ''" >
+        and b.bank_card_ident_state =  #{bankCardIdentState}
+      </if>
+      <if test="certificateIdentState != null and certificateIdentState != ''" >
+        and b.certificate_ident_state =  #{certificateIdentState}
+      </if>
+    </trim>
+  </sql>
+</mapper>

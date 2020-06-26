@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.UserRoleMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.UserRole">
+    <result column="USER_ID" jdbcType="BIGINT" property="userId" />
+    <result column="ROLE_ID" jdbcType="BIGINT" property="roleId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.amblelogistic.Model.UserRole">
+    delete from user_role
+    where USER_ID = #{userId,jdbcType=BIGINT}
+      and ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.amblelogistic.Model.UserRole">
+    insert into user_role (USER_ID, ROLE_ID)
+    values (#{userId,jdbcType=BIGINT}, #{roleId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.UserRole">
+    insert into user_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="queryList" resultMap="BaseResultMap"  parameterType="Object">
+    select *
+    from user_role a
+    where 1=1
+    <if test="userId != null and userId != ''" >
+      and a.USER_ID = #{userId}
+    </if>
+    <if test="roleId != null and roleId != ''" >
+      and a.ROLE_ID = #{roleId}
+    </if>
+  </select>
+
+</mapper>

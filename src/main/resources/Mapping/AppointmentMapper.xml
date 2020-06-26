@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.AppointmentMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.Appointment">
+    <id column="APP_ID" jdbcType="BIGINT" property="appId" />
+    <result column="CUSTOMER_ID" jdbcType="VARCHAR" property="customerId" />
+    <result column="ACTION" jdbcType="VARCHAR" property="action" />
+    <result column="APPOINT_DATE" jdbcType="TIMESTAMP" property="appointDate" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    APP_ID, CUSTOMER_ID, ACTION, APPOINT_DATE, STATUS, CREATE_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from appointment
+    where APP_ID = #{appId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from appointment
+    where APP_ID = #{appId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.amblelogistic.Model.Appointment">
+    insert into appointment (APP_ID, CUSTOMER_ID, ACTION, 
+      APPOINT_DATE, STATUS, CREATE_DATE
+      )
+    values (#{appId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{action,jdbcType=VARCHAR}, 
+      #{appointDate,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.Appointment">
+    insert into appointment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="customerId != null">
+        CUSTOMER_ID,
+      </if>
+      <if test="action != null">
+        ACTION,
+      </if>
+      <if test="appointDate != null">
+        APPOINT_DATE,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null">
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="appointDate != null">
+        #{appointDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.amblelogistic.Model.Appointment">
+    update appointment
+    <set>
+      <if test="customerId != null">
+        CUSTOMER_ID = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null">
+        ACTION = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="appointDate != null">
+        APPOINT_DATE = #{appointDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where APP_ID = #{appId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.amblelogistic.Model.Appointment">
+    update appointment
+    set CUSTOMER_ID = #{customerId,jdbcType=VARCHAR},
+      ACTION = #{action,jdbcType=VARCHAR},
+      APPOINT_DATE = #{appointDate,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    where APP_ID = #{appId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="queryList" resultMap="BaseResultMap"  parameterType="Object">
+    select *
+    from appointment a
+    <include refid="Example_Where_Clause"/>
+    and a.STATUS != '10D'
+    order by a.APP_ID desc
+    <if test="pageSize != null and pageSize != ''" >
+      limit #{pageSize}
+    </if>
+    <if test="pageOffset != null and pageOffset != ''" >
+      offset #{pageOffset}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+    select count(1) from appointment a
+    <include refid="Example_Where_Clause"/>
+    and a.STATUS != '10D'
+  </select>
+  <!-- 查询条件 -->
+  <sql id="Example_Where_Clause">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="appId != null and appId != ''" >
+        and a.APP_ID like CONCAT(CONCAT('%', #{appId}),'%')
+      </if>
+      <if test="customerId != null and customerId != ''" >
+        and a.CUSTOMER_ID like CONCAT(CONCAT('%', #{customerId}),'%')
+      </if>
+      <if test="action != null and action != ''" >
+        and a.ACTION like CONCAT(CONCAT('%', #{action}),'%')
+      </if>
+      <if test="appointDate != null and appointDate != ''" >
+      and a.APPOINT_DATE like CONCAT(CONCAT('%', #{appointDate}),'%')
+    </if>
+      <if test="status != null and status != ''" >
+        and a.STATUS like CONCAT(CONCAT('%', #{status}),'%')
+      </if>
+      <if test="createDate != null and createDate != ''" >
+        and a.CREATE_DATE like CONCAT(CONCAT('%', #{createDate}),'%')
+      </if>
+    </trim>
+  </sql>
+</mapper>

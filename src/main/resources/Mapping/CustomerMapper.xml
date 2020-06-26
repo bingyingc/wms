@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.CustomerMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.Customer">
+    <id column="CUSTOMER_ID" jdbcType="VARCHAR" property="customerId" />
+    <result column="CUSTOMER_NAME" jdbcType="VARCHAR" property="customerName" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="CONTACT_NUM" jdbcType="VARCHAR" property="contactNum" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="REAL_NAME" jdbcType="VARCHAR" property="realName" />
+    <result column="LEVEL" jdbcType="VARCHAR" property="level" />
+    <result column="FIRST_LOGIN" jdbcType="TIMESTAMP" property="firstLogin" />
+    <result column="IS_DELETE" jdbcType="BOOLEAN" property="isDelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    CUSTOMER_ID, CUSTOMER_NAME, PASSWORD, CONTACT_NUM, ADDRESS, DESCRIPTION, CREATE_DATE, 
+    REAL_NAME, LEVEL, FIRST_LOGIN
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customer
+    where CUSTOMER_ID = #{customerId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from customer
+    where CUSTOMER_ID = #{customerId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="customerId"  keyColumn="CUSTOMER_ID" parameterType="com.amblelogistic.Model.Customer">
+    insert into customer (CUSTOMER_NAME, PASSWORD,
+      CONTACT_NUM, ADDRESS, DESCRIPTION, 
+      CREATE_DATE, REAL_NAME, LEVEL, 
+      FIRST_LOGIN)
+    values (#{customerName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{contactNum,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{realName,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, 
+      #{firstLogin,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.Customer">
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        CUSTOMER_ID,
+      </if>
+      <if test="customerName != null">
+        CUSTOMER_NAME,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="contactNum != null">
+        CONTACT_NUM,
+      </if>
+      <if test="address != null">
+        ADDRESS,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="realName != null">
+        REAL_NAME,
+      </if>
+      <if test="level != null">
+        LEVEL,
+      </if>
+      <if test="firstLogin != null">
+        FIRST_LOGIN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null">
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNum != null">
+        #{contactNum,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="firstLogin != null">
+        #{firstLogin,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.amblelogistic.Model.Customer">
+    update customer
+    <set>
+      <if test="customerName != null">
+        CUSTOMER_NAME = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNum != null">
+        CONTACT_NUM = #{contactNum,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realName != null">
+        REAL_NAME = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        LEVEL = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="firstLogin != null">
+      FIRST_LOGIN = #{firstLogin,jdbcType=TIMESTAMP},
+    </if>
+      <if test="isDelete != null">
+        IS_DELETE = #{isDelete,jdbcType=BOOLEAN},
+      </if>
+    </set>
+    where CUSTOMER_ID = #{customerId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.amblelogistic.Model.Customer">
+    update customer
+    set CUSTOMER_NAME = #{customerName,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      CONTACT_NUM = #{contactNum,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      REAL_NAME = #{realName,jdbcType=VARCHAR},
+      LEVEL = #{level,jdbcType=VARCHAR},
+      FIRST_LOGIN = #{firstLogin,jdbcType=TIMESTAMP}
+    where CUSTOMER_ID = #{customerId,jdbcType=VARCHAR}
+  </update>
+
+  <!-- 查询企业列表（管理后台用） -->
+  <select id="queryList" resultMap="BaseResultMap"  parameterType="Object">
+    select *
+    from customer a
+    <include refid="Example_Where_Clause"/>
+<!--    <if test="pointStart != null and pointStart != ''" >-->
+<!--      and c.point &gt;=  #{pointStart}-->
+<!--    </if>-->
+<!--    <if test="pointEnd != null and pointEnd != ''" >-->
+<!--      and c.point &lt;=  #{pointEnd}-->
+<!--    </if>-->
+<!--    <if test="balanceStart != null and balanceStart != ''" >-->
+<!--      and c.point &gt;=  #{balanceStart}-->
+<!--    </if>-->
+<!--    <if test="balanceEnd != null and balanceEnd != ''" >-->
+<!--      and c.point &lt;=  #{balanceEnd}-->
+<!--    </if>-->
+<!--    <if test="refereePhone != null and refereePhone != ''" >-->
+<!--      and a.referee in(select id from t_comp a where a.phone like CONCAT(CONCAT('%', #{refereePhone}),'%'))-->
+<!--    </if>-->
+<!--    <if test="state != null and state != ''" >-->
+<!--      and a.state = #{state}-->
+<!--    </if>-->
+    and a.IS_DELETE = 0
+    order by a.CUSTOMER_ID desc
+    <if test="pageSize != null and pageSize != ''" >
+      limit #{pageSize}
+    </if>
+    <if test="pageOffset != null and pageOffset != ''" >
+      offset #{pageOffset}
+    </if>
+  </select>
+
+  <!-- 用户token信息 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+    select count(1) from customer a
+    <include refid="Example_Where_Clause"/>
+    and a.IS_DELETE = 0
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="Example_Where_Clause">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="customerId != null and customerId != ''" >
+        and a.CUSTOMER_ID like CONCAT(CONCAT('%', #{customerId}),'%')
+      </if>
+      <if test="customerName != null and customerName != ''" >
+        and a.CUSTOMER_NAME like CONCAT(CONCAT('%', #{customerName}),'%')
+      </if>
+      <if test="loginName != null and loginName != ''" >
+        and a.REAL_NAME like CONCAT(CONCAT('%', #{realName}),'%')
+      </if>
+      <if test="compTel != null and compTel != ''" >
+        and a.CONTACT_NUM like CONCAT(CONCAT('%', #{contactNum}),'%')
+      </if>
+    </trim>
+  </sql>
+
+</mapper>

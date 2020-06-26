@@ -1,0 +1,79 @@
+server:
+  port: 9090
+
+logging:
+  level:
+    org.springframework.kafka: INFO
+    org.springframework.messaging.simp.broker: DEBUG
+    com.daollar.orderentry: DEBUG
+    org.apache.kafka: INFO
+    com.amblelogistic.Mapper: DEBUG
+spring:
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+  datasource:
+    url: "jdbc:mysql://127.0.0.1:3306/amble?autoReconnect=true"
+    username: root
+    password: WELCOME
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    maximum-pool-size: 5
+
+## Redis 配置
+## Redis数据库索引（默认为0）
+  redis:
+    database: 0
+  ## Redis服务器地址
+    host: 127.0.0.1
+  ## Redis服务器连接端口
+    port: 6379
+  ## Redis服务器连接密码（默认为空）
+    password: WELCOME
+    pool:
+    ## 连接超时时间（毫秒）
+    timeout: 2000
+    jedis:
+      pool:
+        ## 连接池最大连接数（使用负值表示没有限制）
+        max-idle: 8
+        ## 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+        ## 连接池中的最小空闲连接
+        min-idle: 0
+        maxTotal: 500
+        maxWaitMillis: 3000
+        testOnBorrow: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    #      naming:
+    #        physical-strategy:  org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+## �����ýڵ�Ϊ�����Ľڵ㣬�кܶ�ͬѧ���׽�������÷���spring�Ľڵ��£����������޷���ʶ��
+mybatis:
+  mapper-locations: classpath:mapping/*.xml  #ע�⣺һ��Ҫ��Ӧmapperӳ��xml�ļ�������·��
+  type-aliases-package: com.amblelogistic.Model  # ע�⣺��Ӧʵ�����·��
+
+#pagehelper��ҳ���
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+token:
+  valid:
+    time: 2
+
+interface:
+  type: test
+

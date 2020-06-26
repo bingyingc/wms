@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.RolePermissionMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.RolePermission">
+    <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+    <id column="PERMI_ID" jdbcType="VARCHAR" property="permiId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.amblelogistic.Model.RolePermission">
+    delete from role_permission
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+      and PERMI_ID = #{permiId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.amblelogistic.Model.RolePermission">
+    insert into role_permission (ROLE_ID, PERMI_ID)
+    values (#{roleId,jdbcType=VARCHAR}, #{permiId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.RolePermission">
+    insert into role_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="permiId != null">
+        PERMI_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="permiId != null">
+        #{permiId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

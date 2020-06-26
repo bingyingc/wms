@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.Menu">
+    <id column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+    <result column="MENU_NAME" jdbcType="VARCHAR" property="menuName" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="SEQ" jdbcType="INTEGER" property="seq" />
+    <result column="HTTP_PATH" jdbcType="VARCHAR" property="httpPath" />
+    <result column="ROLE_ID" jdbcType="BIGINT" property="roleId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MENU_ID, MENU_NAME, PARENT_ID, SEQ, HTTP_PATH
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from menu
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from menu
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.amblelogistic.Model.Menu">
+    insert into menu (MENU_ID, MENU_NAME, PARENT_ID, 
+      SEQ, HTTP_PATH)
+    values (#{menuId,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, 
+      #{seq,jdbcType=INTEGER}, #{httpPath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.Menu">
+    insert into menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="menuId != null">
+        MENU_ID,
+      </if>
+      <if test="menuName != null">
+        MENU_NAME,
+      </if>
+      <if test="parentId != null">
+        PARENT_ID,
+      </if>
+      <if test="seq != null">
+        SEQ,
+      </if>
+      <if test="httpPath != null">
+        HTTP_PATH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="menuId != null">
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="httpPath != null">
+        #{httpPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.amblelogistic.Model.Menu">
+    update menu
+    <set>
+      <if test="menuName != null">
+        MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="httpPath != null">
+        HTTP_PATH = #{httpPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.amblelogistic.Model.Menu">
+    update menu
+    set MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=INTEGER},
+      HTTP_PATH = #{httpPath,jdbcType=VARCHAR}
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="queryByRoleId" parameterType="Long" resultMap="BaseResultMap">
+    select a.<include refid="Base_Column_List" />
+    ,b.ROLE_ID
+    from menu a LEFT JOIN role_menu b on a.MENU_ID = b.MENU_ID where 1 = 1
+    and b.ROLE_ID = #{roleId,jdbcType=BIGINT}
+  </select>
+</mapper>

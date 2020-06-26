@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.TitleMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.Title">
+    <id column="TITLE_ID" jdbcType="VARCHAR" property="titleId" />
+    <result column="DEPT_ID" jdbcType="VARCHAR" property="deptId" />
+    <result column="TITILE_NAME" jdbcType="VARCHAR" property="titileName" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    TITLE_ID, DEPT_ID, TITILE_NAME, DESCRIPTION
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from title
+    where TITLE_ID = #{titleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from title
+    where TITLE_ID = #{titleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.amblelogistic.Model.Title">
+    insert into title (TITLE_ID, DEPT_ID, TITILE_NAME, 
+      DESCRIPTION)
+    values (#{titleId,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}, #{titileName,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.Title">
+    insert into title
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="titleId != null">
+        TITLE_ID,
+      </if>
+      <if test="deptId != null">
+        DEPT_ID,
+      </if>
+      <if test="titileName != null">
+        TITILE_NAME,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="titleId != null">
+        #{titleId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="titileName != null">
+        #{titileName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.amblelogistic.Model.Title">
+    update title
+    <set>
+      <if test="deptId != null">
+        DEPT_ID = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="titileName != null">
+        TITILE_NAME = #{titileName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TITLE_ID = #{titleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.amblelogistic.Model.Title">
+    update title
+    set DEPT_ID = #{deptId,jdbcType=VARCHAR},
+      TITILE_NAME = #{titileName,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR}
+    where TITLE_ID = #{titleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.InventAppointMapper">
+  <resultMap id="BaseResultMap" type="com.amblelogistic.Model.InventAppoint">
+    <id column="INVEN_ID" jdbcType="VARCHAR" property="invenId" />
+    <id column="APP_ID" jdbcType="VARCHAR" property="appId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.amblelogistic.Model.InventAppoint">
+    delete from invent_appoint
+    where INVEN_ID = #{invenId,jdbcType=VARCHAR}
+      and APP_ID = #{appId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.amblelogistic.Model.InventAppoint">
+    insert into invent_appoint (INVEN_ID, APP_ID)
+    values (#{invenId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.amblelogistic.Model.InventAppoint">
+    insert into invent_appoint
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="invenId != null">
+        INVEN_ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="invenId != null">
+        #{invenId,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

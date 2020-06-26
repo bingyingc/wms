@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amblelogistic.Mapper.UserTokenMapper" >
+    <!-- Result Map-->
+    <resultMap id="BaseResultMap" type="com.amblelogistic.Model.UserToken" >
+        <result column="ID" property="id"/>
+        <result column="USER_ID" property="userId"/>
+        <result column="TOKEN" property="token"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="IS_DELETE" property="isDelete"/>
+    </resultMap>
+
+    <!-- t_v2_user_token table all fields -->
+    <sql id="Base_Column_List" >
+	 ID,USER_ID,TOKEN,CREATE_TIME,IS_DELETE
+</sql>
+
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != null and id != ''" >
+                and ID =  #{id}
+            </if>
+            <if test="userId != null and userId != ''" >
+                and USER_ID =  #{userId}
+            </if>
+            <if test="token != null and token != ''" >
+                and TOKEN =  #{token}
+            </if>
+            <if test="createTime != null and createTime != ''" >
+                and CREATE_TIME =  #{createTime}
+            </if>
+            <if test="isDelete != null and isDelete != ''" >
+                and IS_DELETE =  #{isDelete}
+            </if>
+        </trim>
+    </sql>
+
+
+    <!-- 插入记录 -->
+    <insert id="insert" parameterType="Object" keyProperty="id">
+  insert into t_user_token(ID,USER_ID,TOKEN,CREATE_TIME,IS_DELETE)
+ values(#{id},#{userId},#{token},now(),#{isDelete})
+</insert>
+
+    <!-- 根据id，修改记录-->
+    <update id="updateByPrimaryKey" parameterType="Object" >
+  update t_user_token set USER_ID=#{userId},TOKEN=#{token},CREATE_TIME=now(),IS_DELETE=#{isDelete} where ID=#{id}
+ </update>
+
+    <!-- 修改记录，只修改只不为空的字段 -->
+    <update id="updateByPrimaryKeySelective" parameterType="Object" >
+        update t_user_token set
+        <trim  suffixOverrides="," >
+            <if test="userId != null  ">
+                USER_ID=#{userId},
+            </if>
+            <if test="token != null  ">
+                TOKEN=#{token},
+            </if>
+            <if test="createTime != null  ">
+                CREATE_TIME=#{createTime},
+            </if>
+            <if test="isDelete != null  ">
+                IS_DELETE=#{isDelete},
+            </if>
+        </trim> where ID=#{id}
+    </update>
+
+    <!-- 删除记录 -->
+    <delete id="deleteByPrimaryKey" parameterType="Object">
+	delete from t_user_token where ID = #{id}
+</delete>
+
+    <!-- 根据id查询 用户token信息 -->
+    <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="Object">
+        select <include refid="Base_Column_List" />
+        from t_user_token where ID = #{id}
+    </select>
+
+    <!-- 用户token信息 列表总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1) from t_user_token
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询用户token信息列表 -->
+    <select id="query" resultMap="BaseResultMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user_token
+        <include refid="Example_Where_Clause"/>
+        order by ID desc
+    </select>
+
+</mapper>
